@@ -20,12 +20,19 @@ if ($text === "/start") {
     sendMessage($chat_id, "👋 مرحباً بك في البوت الخاص بنا!");
 
     // إرسال زر WebApp داخل Reply Keyboard
-    sendMessage($chat_id, "✅ اضغط على الزر أدناه لفتح التطبيق", [
-        'keyboard' => [[
-            ['text' => 'فتح التطبيق 🚀', 'web_app' => ['url' => $webapp_url]]
-        ]],
-        'resize_keyboard' => true,
-        'one_time_keyboard' => false
+    // sendMessage($chat_id, "✅ اضغط على الزر أدناه لفتح التطبيق", [
+    //     'keyboard' => [[
+    //         ['text' => 'فتح التطبيق 🚀', 'web_app' => ['url' => $webapp_url]]
+    //     ]],
+    //     'resize_keyboard' => true,
+    //     'one_time_keyboard' => false
+    // ]);
+    sendMessage($chat_id, "✅ اضغط على الزر أدناه لفتح التطبيق:", [
+        'reply_markup' => [
+            'inline_keyboard' => [[
+                ['text' => '🚀 فتح التطبيق', 'web_app' => ['url' => $webapp_url]]
+            ]]
+        ]
     ]);
 }
 
@@ -46,5 +53,4 @@ function sendMessage($chat_id, $text, $reply_markup = null)
     }
 
     file_get_contents($url . "?" . http_build_query($data));
-    
 }
