@@ -3,7 +3,7 @@
 $bot_token = '7806251613:AAHOh8z1xsX0lpVGrxGrNwrIGJi4z6fNkzU';
 $webapp_url = 'https://tele.hlm.one/user-info.html'; // رابط صفحة WebApp
 
-// استقبال البيانات من Telegram
+// استقبال التحديث من Telegram
 $content = file_get_contents("php://input");
 $update = json_decode($content, true);
 
@@ -17,18 +17,21 @@ $text = $update["message"]["text"] ?? '';
 
 // إذا كانت الرسالة /start
 if ($text === "/start") {
-    // 1. رسالة ترحيب
-    sendMessage($chat_id, "👋 أهلاً بك! هذا هو التطبيق التجريبي الخاص بنا.");
+    // 1. إرسال رسالة ترحيب
+    sendMessage($chat_id, "👋 مرحباً بك في البوت التجريبي!");
 
-    // 2. إرسال زر WebApp داخل inline keyboard (لكي يمرر معلومات المستخدم)
-    sendMessage($chat_id, "✅ اضغط الزر لفتح التطبيق:", [
+    // 2. إرسال زر WebApp كـ Inline Keyboard (أفضل تجربة لفتح التطبيق مباشرة)
+    sendMessage($chat_id, "🚀 اضغط على الزر أدناه لفتح التطبيق:", [
         'inline_keyboard' => [[
-            ['text' => '🚀 فتح التطبيق', 'web_app' => ['url' => $webapp_url]]
+            ['text' => 'فتح التطبيق الآن 🌐', 'web_app' => ['url' => $webapp_url]]
         ]]
     ]);
+
+    // 3. تعيين زر دائم في أسفل البوت (menu_button)
+    setPersistentWebAppButton($bot_token, $webapp_url);
 }
 
-// دالة إرسال رسالة
+// ===== دالة لإرسال رسالة =====
 function sendMessage($chat_id, $text, $reply_markup = null) {
     global $bot_token;
 
@@ -41,8 +44,27 @@ function sendMessage($chat_id, $text, $reply_markup = null) {
     ];
 
     if ($reply_markup) {
-        $data['reply_markup'] = json_encode(['inline_keyboard' => $reply_markup['inline_keyboard']]);
+        $data['reply_markup'] = json_encode($reply_markup);
     }
 
     file_get_contents($url . "?" . http_build_query($data));
+}
+
+// ===== دالة لإضافة زر دائم أسفل البوت =====
+function setPersistentWebAppButton($token, $webapp_url) {
+    $url = "https://api.telegram.org/bot$token/setChatMenuButton";
+
+    $data = [
+        'menu_button' => [
+            'type' => 'web_app',
+            'text' => 'فتح التطبيق 🌐',
+            'web_app' => [
+                'url' => $webapp_url
+            ]
+        ]
+    ];
+
+    file_get_contents($url . '?' . http_build_query([
+        'menu_button' => json_encode($data['menu_button'])
+    ]));
 }
