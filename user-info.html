@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>معلومات مستخدم التلغرام</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      direction: rtl;
+      background: #f7f9fc;
+      padding: 30px;
+      color: #333;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    h2 {
+      color: #0088cc;
+    }
+    img {
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      margin-bottom: 20px;
+    }
+    .info p {
+      font-size: 16px;
+      margin: 8px 0;
+    }
+  </style>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2>معلومات حسابك في التلغرام</h2>
+    <div id="user-info">جاري التحميل...</div>
+  </div>
+
+  <script>
+    window.onload = () => {
+      if (window.Telegram && Telegram.WebApp) {
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+
+        const user = Telegram.WebApp.initDataUnsafe?.user;
+
+        if (user) {
+          document.getElementById("user-info").innerHTML = `
+            <img src="https://t.me/i/userpic/320/${user.id}.jpg" alt="User Picture" />
+            <div class="info">
+              <p><strong>الاسم:</strong> ${user.first_name} ${user.last_name || ''}</p>
+              <p><strong>اسم المستخدم:</strong> @${user.username || 'غير متوفر'}</p>
+              <p><strong>المعرف:</strong> ${user.id}</p>
+              <p><strong>اللغة:</strong> ${user.language_code || 'غير معروفة'}</p>
+            </div>
+          `;
+        } else {
+          document.getElementById("user-info").innerHTML = "❌ لم يتم العثور على معلومات المستخدم. يجب فتح الصفحة من داخل Telegram WebApp.";
+        }
+      } else {
+        document.getElementById("user-info").innerHTML = "❌ يجب فتح الصفحة من خلال زر WebApp في بوت التلغرام.";
+      }
+    };
+  </script>
+</body>
+</html>
