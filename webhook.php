@@ -2,7 +2,7 @@
 //https://api.telegram.org/bot7806251613:AAHOh8z1xsX0lpVGrxGrNwrIGJi4z6fNkzU/setWebhook?url=https://tele.hlm.one/webhook.php
 // ملف webhook.php
 $bot_token = '7806251613:AAHOh8z1xsX0lpVGrxGrNwrIGJi4z6fNkzU'; // ← ضع توكن البوت هنا
-$webapp_url = 'https://lele.hlm.one/user-info.html'; // ← رابط الصفحة
+$webapp_url = 'https://tele.hlm.one/user-info.html'; // ← رابط الصفحة
 
 $content = file_get_contents("php://input");
 $update = json_decode($content, true);
