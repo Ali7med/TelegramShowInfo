@@ -2,44 +2,51 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8" />
-  <title>معلومات مستخدم التلغرام</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>معلومات حساب Telegram</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
       direction: rtl;
-      background: #f7f9fc;
+      background: #f4f6f9;
       padding: 30px;
       color: #333;
     }
     .container {
       max-width: 500px;
       margin: auto;
-      background: white;
-      padding: 20px;
+      background: #fff;
+      padding: 25px;
       border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       text-align: center;
     }
     h2 {
       color: #0088cc;
+      margin-bottom: 20px;
     }
     img {
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
-      width: 100px;
-      height: 100px;
       margin-bottom: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .info {
+      text-align: right;
+      margin-top: 20px;
     }
     .info p {
       font-size: 16px;
       margin: 8px 0;
     }
   </style>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
+
   <div class="container">
-    <h2>معلومات حسابك في التلغرام</h2>
+    <h2>معلومات حسابك في Telegram</h2>
     <div id="user-info">جاري التحميل...</div>
   </div>
 
@@ -55,19 +62,22 @@
           document.getElementById("user-info").innerHTML = `
             <img src="https://t.me/i/userpic/320/${user.id}.jpg" alt="User Picture" />
             <div class="info">
-              <p><strong>الاسم:</strong> ${user.first_name} ${user.last_name || ''}</p>
+              <p><strong>الاسم الكامل:</strong> ${user.first_name} ${user.last_name || ''}</p>
               <p><strong>اسم المستخدم:</strong> @${user.username || 'غير متوفر'}</p>
-              <p><strong>المعرف:</strong> ${user.id}</p>
+              <p><strong>المعرف (ID):</strong> ${user.id}</p>
               <p><strong>اللغة:</strong> ${user.language_code || 'غير معروفة'}</p>
+              <p><strong>هل هو بوت؟</strong> ${user.is_bot ? 'نعم' : 'لا'}</p>
+              <p><strong>هل لديه اشتراك Premium؟</strong> ${user.is_premium ? 'نعم' : 'لا'}</p>
             </div>
           `;
         } else {
-          document.getElementById("user-info").innerHTML = "❌ لم يتم العثور على معلومات المستخدم. يجب فتح الصفحة من داخل Telegram WebApp.";
+          document.getElementById("user-info").innerHTML = "⚠️ لم يتم العثور على معلومات المستخدم. يجب فتح الصفحة من داخل Telegram WebApp.";
         }
       } else {
-        document.getElementById("user-info").innerHTML = "❌ يجب فتح الصفحة من خلال زر WebApp في بوت التلغرام.";
+        document.getElementById("user-info").innerHTML = "⚠️ هذه الصفحة يجب فتحها من خلال Telegram WebApp.";
       }
     };
   </script>
+
 </body>
 </html>
